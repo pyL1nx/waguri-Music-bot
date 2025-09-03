@@ -1,5 +1,6 @@
 FROM nikolaik/python-nodejs:python3.10-nodejs18
 
+# Install dependencies
 RUN apt-get update -y && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends ffmpeg ntpdate tzdata \
     && apt-get clean \
@@ -8,11 +9,14 @@ RUN apt-get update -y && apt-get upgrade -y \
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && echo Asia/Kolkata > /etc/timezone
 
+# Copy source
 COPY . /app/
 WORKDIR /app/
 
-RUN pip3 install --no-cache-dir --upgrade --requirement requirements.txt
+# Install Python deps
+RUN pip3 install --no-cache-dir --upgrade -r requirements.txt
 
+# Copy start script
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
