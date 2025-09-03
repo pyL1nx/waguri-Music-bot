@@ -2,10 +2,12 @@ FROM nikolaik/python-nodejs:python3.10-nodejs18
 
 RUN apt-get update -y && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends ffmpeg ntpdate tzdata \
-    && ntpdate pool.ntp.org \
-    && ln -snf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && echo Asia/Kolkata > /etc/timezone \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Set timezone
+RUN ln -snf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && echo Asia/Kolkata > /etc/timezone
+
 
 COPY . /app/
 WORKDIR /app/
